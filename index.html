@@ -1,0 +1,181 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>مولّد الصفحات والباركود</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#111318">
+<style>
+:root{--bg:#F4F5F7;--c:#fff;--t:#111318;--m:#6B7280;--l:#E3E5EA;--a:#111318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:system-ui,"Segoe UI",Tahoma,sans-serif;font-size:15px}
+.w{max-width:560px;margin:0 auto;padding:14px 14px 90px}
+h1{font-size:20px;margin:6px 0 2px}.mu{color:var(--m);font-size:13px;line-height:1.7}
+.cd{background:var(--c);border-radius:18px;padding:14px;margin:12px 0;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+input,textarea,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--l);border-radius:12px;background:#fff;color:var(--t);margin:4px 0}
+textarea{min-height:70px;resize:vertical}
+button{font:inherit;border:0;border-radius:12px;padding:10px 14px;background:var(--a);color:#fff;font-weight:600;cursor:pointer}
+button.s{background:#EEF0F3;color:var(--t)}button.g{background:#1F9D55}button.x{background:#FDECEC;color:#B42318;padding:8px 11px}
+.r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.r>*{flex:1}.r>.n{flex:none}
+.blk{border:1px solid var(--l);border-radius:14px;padding:10px;margin:8px 0;background:#FAFAFB}
+.tag{font-size:12px;color:var(--m);font-weight:700}
+.qr{text-align:center}.qr canvas{max-width:100%;border:8px solid #fff;border-radius:12px;background:#fff}
+.lk{direction:ltr;font-size:12px;word-break:break-all;background:#F1F3F5;border-radius:10px;padding:8px;max-height:70px;overflow:auto;color:#333}
+.it{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--l)}.it:last-child{border:0}
+.pv{border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.ph{padding:22px 18px;color:#fff;text-align:center}.ph h2{margin:0;font-size:22px}.ph p{margin:6px 0 0;opacity:.9}
+.pb{padding:12px 18px 18px}.pr{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid #ECEDF0}.pr span{color:#6B7280}.pr b{text-align:end;word-break:break-word}
+.pp{margin:12px 0;line-height:1.8;white-space:pre-wrap}.pa{display:block;text-align:center;text-decoration:none;color:#fff;padding:12px;border-radius:12px;font-weight:700;margin:8px 0}
+.pf{text-align:center;color:#9AA0AA;font-size:11.5px;padding:0 14px 16px;line-height:1.7}
+.ft{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);text-align:center;padding:8px;font-size:12px;color:var(--m);border-top:1px solid var(--l)}
+.tb{display:flex;gap:6px;overflow:auto;margin:8px 0}.tb button{white-space:nowrap}
+.toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:#111318;color:#fff;padding:9px 16px;border-radius:20px;font-size:13px;z-index:9}
+.vw{max-width:520px;margin:0 auto;padding:16px}
+</style></head><body><div id="app"></div><div class="ft">Dev. Ahmed Ismail · 01092947546</div>
+<script>
+/* ===== QR (byte mode, versions 1-40) ===== */
+var QR=(function(){
+var ECCW=[[-1,7,10,15,20,26,18,20,24,30,18,20,24,26,30,22,24,28,30,28,28,28,28,30,30,26,28,30,30,30,30,30,30,30,30,30,30,30,30,30,30],
+[-1,10,16,26,18,24,16,18,22,22,26,30,22,22,24,24,28,28,26,26,26,26,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28],
+[-1,13,22,18,26,18,24,18,22,20,24,28,26,24,20,30,24,28,28,26,30,28,30,30,30,30,28,30,30,30,30,30,30,30,30,30,30,30,30,30,30],
+[-1,17,28,22,16,22,28,26,26,24,28,24,28,22,24,24,30,28,28,26,28,30,24,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30]];
+var NBLK=[[-1,1,1,1,1,1,2,2,2,2,4,4,4,4,4,6,6,6,6,7,8,8,9,9,10,12,12,12,13,14,15,16,17,18,19,19,20,21,22,24,25],
+[-1,1,1,1,2,2,4,4,4,5,5,5,8,9,9,10,10,11,13,14,16,17,17,18,20,21,23,25,26,28,29,31,33,35,37,38,40,43,45,47,49],
+[-1,1,1,2,2,4,4,6,6,8,8,8,10,12,16,12,17,16,18,21,20,23,23,25,27,29,34,34,35,38,40,43,45,48,51,53,56,59,62,65,68],
+[-1,1,1,2,4,4,4,5,6,8,8,11,11,16,16,18,16,19,21,25,25,25,34,30,32,35,37,40,42,45,48,51,54,57,60,63,66,70,74,77,81]];
+var FMT={L:1,M:0,Q:3,H:2},IDX={L:0,M:1,Q:2,H:3};
+function rawMods(v){var r=(16*v+128)*v+64;if(v>=2){var n=Math.floor(v/7)+2;r-=(25*n-10)*n-55;if(v>=7)r-=36}return r}
+function dataCw(v,e){return Math.floor(rawMods(v)/8)-ECCW[e][v]*NBLK[e][v]}
+function gmul(x,y){var z=0,i;for(i=7;i>=0;i--){z=(z<<1)^((z>>>7)*0x11D);z^=((y>>>i)&1)*x}return z}
+function rsDiv(d){var r=[],i,j,root=1;for(i=0;i<d;i++)r.push(0);r[d-1]=1;for(i=0;i<d;i++){for(j=0;j<d;j++){r[j]=gmul(r[j],root);if(j+1<d)r[j]^=r[j+1]}root=gmul(root,2)}return r}
+function rsRem(data,div){var r=[],i,k;for(i=0;i<div.length;i++)r.push(0);for(k=0;k<data.length;k++){var f=data[k]^r.shift();r.push(0);for(i=0;i<div.length;i++)r[i]^=gmul(div[i],f)}return r}
+function utf8(s){var o=[],i,c;s=unescape(encodeURIComponent(s));for(i=0;i<s.length;i++){c=s.charCodeAt(i);o.push(c)}return o}
+function bit(x,i){return((x>>>i)&1)!=0}
+function make(text,eclName){
+  var ecl=IDX[eclName]==null?1:IDX[eclName],bytes=utf8(String(text)),ver,used,cap;
+  for(ver=1;ver<=40;ver++){cap=dataCw(ver,ecl)*8;var cc=ver<=9?8:16;used=4+cc+bytes.length*8;if(used<=cap)break}
+  if(ver>40)return null;
+  var bits=[];function put(v,n){var i;for(i=n-1;i>=0;i--)bits.push((v>>>i)&1)}
+  put(4,4);put(bytes.length,ver<=9?8:16);bytes.forEach(function(b){put(b,8)});
+  put(0,Math.min(4,cap-bits.length));while(bits.length%8)bits.push(0);
+  var cw=[],i,j;for(i=0;i<bits.length;i+=8){var b=0;for(j=0;j<8;j++)b=(b<<1)|bits[i+j];cw.push(b)}
+  for(var pad=0xEC;cw.length<cap/8;pad^=0xEC^0x11)cw.push(pad);
+  /* ECC + interleave */
+  var nb=NBLK[ecl][ver],el=ECCW[ecl][ver],raw=Math.floor(rawMods(ver)/8),ns=nb-raw%nb,sl=Math.floor(raw/nb),blocks=[],k=0,div=rsDiv(el);
+  for(i=0;i<nb;i++){var dat=cw.slice(k,k+sl-el+(i<ns?0:1));k+=dat.length;var ecc=rsRem(dat,div);if(i<ns)dat.push(0);blocks.push(dat.concat(ecc))}
+  var all=[];for(i=0;i<blocks[0].length;i++)for(j=0;j<blocks.length;j++)if(i!=sl-el||j>=ns)all.push(blocks[j][i]);
+  var size=ver*4+17,M=[],F=[],y,x;
+  for(y=0;y<size;y++){M.push([]);F.push([]);for(x=0;x<size;x++){M[y].push(false);F[y].push(false)}}
+  function sf(x,y,d){M[y][x]=d;F[y][x]=true}
+  function fmt(mask){var d=(FMT[eclName]==null?0:FMT[eclName])<<3|mask,r=d,i;for(i=0;i<10;i++)r=(r<<1)^((r>>>9)*0x537);var bs=(d<<10|r)^0x5412;
+    for(i=0;i<=5;i++)sf(8,i,bit(bs,i));sf(8,7,bit(bs,6));sf(8,8,bit(bs,7));sf(7,8,bit(bs,8));for(i=9;i<15;i++)sf(14-i,8,bit(bs,i));
+    for(i=0;i<8;i++)sf(size-1-i,8,bit(bs,i));for(i=8;i<15;i++)sf(8,size-15+i,bit(bs,i));sf(8,size-8,true)}
+  for(i=0;i<size;i++){sf(6,i,i%2==0);sf(i,6,i%2==0)}
+  function finder(cx,cy){var dy,dx;for(dy=-4;dy<=4;dy++)for(dx=-4;dx<=4;dx++){var d=Math.max(Math.abs(dx),Math.abs(dy)),xx=cx+dx,yy=cy+dy;if(xx>=0&&xx<size&&yy>=0&&yy<size)sf(xx,yy,d!=2&&d!=4)}}
+  finder(3,3);finder(size-4,3);finder(3,size-4);
+  var ap=[];if(ver>1){var na=Math.floor(ver/7)+2,step=ver==32?26:Math.ceil((ver*4+4)/(na*2-2))*2;ap=[6];for(var pos=size-7;ap.length<na;pos-=step)ap.splice(1,0,pos)}
+  var na2=ap.length;for(i=0;i<na2;i++)for(j=0;j<na2;j++){if((i==0&&j==0)||(i==0&&j==na2-1)||(i==na2-1&&j==0))continue;var ax=ap[i],ay=ap[j],dy,dx;for(dy=-2;dy<=2;dy++)for(dx=-2;dx<=2;dx++)sf(ax+dx,ay+dy,Math.max(Math.abs(dx),Math.abs(dy))!=1)}
+  fmt(0);
+  if(ver>=7){var r=ver,q;for(q=0;q<12;q++)r=(r<<1)^((r>>>11)*0x1F25);var vb=ver<<12|r;for(q=0;q<18;q++){var c=bit(vb,q),a=size-11+q%3,b2=Math.floor(q/3);sf(a,b2,c);sf(b2,a,c)}}
+  /* codewords */
+  var bi=0,right,vert,jj;
+  for(right=size-1;right>=1;right-=2){if(right==6)right=5;for(vert=0;vert<size;vert++)for(jj=0;jj<2;jj++){var xx=right-jj,up=((right+1)&2)==0,yy=up?size-1-vert:vert;if(!F[yy][xx]&&bi<all.length*8){M[yy][xx]=bit(all[bi>>>3],7-(bi&7));bi++}}}
+  function mask(m){var yy,xx,inv;for(yy=0;yy<size;yy++)for(xx=0;xx<size;xx++){switch(m){case 0:inv=(xx+yy)%2==0;break;case 1:inv=yy%2==0;break;case 2:inv=xx%3==0;break;case 3:inv=(xx+yy)%3==0;break;case 4:inv=(Math.floor(xx/3)+Math.floor(yy/2))%2==0;break;case 5:inv=xx*yy%2+xx*yy%3==0;break;case 6:inv=(xx*yy%2+xx*yy%3)%2==0;break;default:inv=((xx+yy)%2+xx*yy%3)%2==0}
+    if(inv&&!F[yy][xx])M[yy][xx]=!M[yy][xx]}}
+  function pen(){var p=0,yy,xx,dark=0,s,n;
+    function line(str){var c=0,i2,m;for(m=0;m<2;m++){var pat=m?'10111010000':'00001011101',at=-1;while((at=str.indexOf(pat,at+1))>=0)c++}
+      var run=1;for(i2=1;i2<str.length;i2++){if(str.charAt(i2)==str.charAt(i2-1)){run++;if(run==5)p+=3;else if(run>5)p++}else run=1}return c}
+    for(yy=0;yy<size;yy++){s='';for(xx=0;xx<size;xx++){s+=M[yy][xx]?'1':'0';if(M[yy][xx])dark++}p+=line(s)*40}
+    for(xx=0;xx<size;xx++){s='';for(yy=0;yy<size;yy++)s+=M[yy][xx]?'1':'0';p+=line(s)*40}
+    for(yy=0;yy<size-1;yy++)for(xx=0;xx<size-1;xx++){var c0=M[yy][xx];if(c0==M[yy][xx+1]&&c0==M[yy+1][xx]&&c0==M[yy+1][xx+1])p+=3}
+    n=size*size;p+=(Math.ceil(Math.abs(dark*20-n*10)/n)-1)*10;return p}
+  var best=0,bp=1e9,m2;for(m2=0;m2<8;m2++){mask(m2);fmt(m2);var pp=pen();if(pp<bp){bp=pp;best=m2}mask(m2)}
+  mask(best);fmt(best);
+  return {size:size,ver:ver,mask:best,ecl:eclName,bytes:bytes.length,cap:cap/8,get:function(x,y){return M[y][x]}}}
+return {make:make}})();
+
+var $=function(s){return document.querySelector(s)};
+var AR=(document.documentElement.lang!='en');
+function bt(a,e){return AR?a:e}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem('pg.'+k);localStorage.setItem('pg.'+k,v)}catch(e){return null}}
+function toast(m){var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove()},2200)}
+var TYPES={f:['بيان (عنوان + قيمة)','Field (label + value)'],h:['عنوان فرعي','Heading'],p:['فقرة نص','Paragraph'],l:['زر رابط','Link button'],tel:['زر اتصال','Call button'],wa:['زر واتساب','WhatsApp button'],mail:['زر بريد','Email button'],map:['زر موقع/خريطة','Map button']};
+var LAB={l:['عنوان الزر','رابط https://...'],tel:['عنوان الزر','رقم الهاتف'],wa:['عنوان الزر','رقم واتساب بالكود الدولي'],mail:['عنوان الزر','البريد'],map:['عنوان الزر','رابط الموقع']};
+var COL=['#111318','#0B6E4F','#1D4ED8','#B45309','#9D174D','#6D28D9','#0F766E'];
+var D=null,ID=null,LINK='';
+/* ---- encoding ---- */
+function b64u(u8){var s='',i;for(i=0;i<u8.length;i++)s+=String.fromCharCode(u8[i]);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function unb64u(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';var b=atob(s),u=new Uint8Array(b.length),i;for(i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function pipe(u8,mode,fmt){var cs=new (mode=='c'?CompressionStream:DecompressionStream)(fmt);var w=cs.writable.getWriter();w.write(u8);w.close();return new Response(cs.readable).arrayBuffer().then(function(b){return new Uint8Array(b)})}
+function enc(d){var u=new TextEncoder().encode(JSON.stringify(d));
+ if(typeof CompressionStream=='undefined')return Promise.resolve('0'+b64u(u));
+ return pipe(u,'c','deflate-raw').then(function(z){var a='1'+b64u(z),b='0'+b64u(u);return a.length<b.length?a:b}).catch(function(){return '0'+b64u(u)})}
+function dec(s){var u=unb64u(s.slice(1));
+ var f=function(x){return JSON.parse(new TextDecoder().decode(x))};
+ if(s.charAt(0)=='0')return Promise.resolve(f(u));return pipe(u,'d','deflate-raw').then(f)}
+function base(){var b=ls('host');if(b)return b.split('#')[0];if(/^https?:/i.test(location.href))return location.href.split('#')[0];return ''}
+/* ---- page html ---- */
+function safeUrl(u){u=String(u||'').trim();if(!u)return '';if(/^https?:\/\//i.test(u))return u;if(/^[a-z][a-z0-9+.-]*:/i.test(u))return '';return 'https://'+u}
+function digits(s){return String(s||'').replace(/[^0-9+]/g,'')}
+function blocksHtml(d){var h='',rows='';
+ function fl(){if(rows){h+=rows;rows=''}}
+ (d.b||[]).forEach(function(x){var t=x[0],a=x[1]||'',v=x[2]||'';
+  if(t=='f'){if(a||v)rows+='<div class="pr"><span>'+esc(a)+'</span><b>'+esc(v)+'</b></div>';return}
+  fl();
+  if(t=='h'){h+='<h3 style="margin:16px 0 4px;color:'+esc(d.c||'#111')+'">'+esc(a)+'</h3>';return}
+  if(t=='p'){h+='<div class="pp">'+esc(a)+'</div>';return}
+  var href='';if(t=='l'||t=='map')href=safeUrl(v);else if(t=='tel')href='tel:'+digits(v);else if(t=='wa')href='https://wa.me/'+digits(v).replace(/^\+/,'');else if(t=='mail')href='mailto:'+encodeURIComponent(v).replace(/%40/,'@');
+  if(href)h+='<a class="pa" style="background:'+esc(d.c||'#111')+'" href="'+esc(href)+'" rel="noopener noreferrer" target="_blank">'+esc(a||v)+'</a>'});
+ fl();return h}
+function pageInner(d){return '<div class="ph" style="background:'+esc(d.c||'#111318')+'"><h2>'+esc(d.t||'')+'</h2>'+(d.s?'<p>'+esc(d.s)+'</p>':'')+'</div><div class="pb">'+blocksHtml(d)+'</div><div class="pf">'+bt('صفحة أنشأها مستخدم بواسطة «مولّد الصفحات». تحقّق من مصدرها قبل إدخال أي بيانات حساسة.','User-made page created with “Page Generator”. Verify its source before entering sensitive data.')+'</div>'}
+function fullHtml(d){return '<!DOCTYPE html><html lang="ar" dir="auto"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(d.t||'')+'</title><style>body{margin:0;background:#F4F5F7;font-family:system-ui,"Segoe UI",Tahoma,sans-serif;color:#111318}.pv{max-width:520px;margin:18px auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08)}.ph{padding:22px 18px;color:#fff;text-align:center}.ph h2{margin:0;font-size:22px}.ph p{margin:6px 0 0;opacity:.9}.pb{padding:12px 18px 18px}.pr{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid #ECEDF0}.pr span{color:#6B7280}.pr b{text-align:end;word-break:break-word}.pp{margin:12px 0;line-height:1.8;white-space:pre-wrap}.pa{display:block;text-align:center;text-decoration:none;color:#fff;padding:12px;border-radius:12px;font-weight:700;margin:8px 0}.pf{text-align:center;color:#9AA0AA;font-size:11.5px;padding:0 14px 16px;line-height:1.7}</style></head><body><div class="pv">'+pageInner(d)+'</div></body></html>'}
+/* ---- state ---- */
+function list(){try{return JSON.parse(ls('list')||'[]')}catch(e){return []}}
+function saveList(l){ls('list',JSON.stringify(l))}
+function newPage(){D={t:'',s:'',c:COL[0],b:[['f','','']]};ID='p'+Date.now();view='ed';render()}
+function openPage(id){var p=list().filter(function(x){return x.id==id})[0];if(!p)return;D=JSON.parse(JSON.stringify(p.d));ID=id;view='ed';render()}
+function delPage(id){if(!confirm(bt('حذف الصفحة؟','Delete this page?')))return;saveList(list().filter(function(x){return x.id!=id}));render()}
+function savePage(){if(!D.t&&!D.b.length)return;var l=list(),i,f=false;for(i=0;i<l.length;i++)if(l[i].id==ID){l[i].d=D;f=true}if(!f)l.unshift({id:ID,d:D});saveList(l)}
+var view='home';
+function goHome(){savePage();view='home';render()}
+/* ---- render ---- */
+function render(){var a=$('#app');
+ var vh=location.hash.match(/^#p=(.+)$/);
+ if(vh&&view!='ed'&&view!='home2'){a.innerHTML='<div class="vw"><div class="mu" style="text-align:center">'+bt('جارٍ التحميل…','Loading…')+'</div></div>';
+  dec(vh[1]).then(function(d){D=d;a.innerHTML='<div class="vw"><div class="pv">'+pageInner(d)+'</div><div class="r" style="margin-top:14px"><button class="s" onclick="editCopy()">'+bt('تعديل نسخة من هذه الصفحة','Edit a copy')+'</button></div></div>'}).catch(function(){a.innerHTML='<div class="vw"><div class="cd">'+bt('الرابط غير صالح أو ناقص.','This link is invalid or incomplete.')+'</div></div>'});return}
+ if(view=='home')return home();editor()}
+function editCopy(){ID='p'+Date.now();view='ed';history.replaceState(null,'',location.pathname+location.search);render()}
+function home(){var l=list(),h='<div class="w"><h1>'+bt('مولّد الصفحات والباركود','Page & Barcode Generator')+'</h1><div class="mu">'+bt('اصنع صفحة ويب ببياناتك، واحصل على رابط وباركود يفتحها على أي جوال.','Build a web page with your data, get a link and a QR that opens it on any phone.')+'</div><div class="cd"><button style="width:100%" onclick="newPage()">+ '+bt('صفحة جديدة','New page')+'</button></div>';
+ if(l.length){h+='<div class="cd"><div class="tag">'+bt('صفحاتي','My pages')+'</div>'+l.map(function(p){return '<div class="it"><div onclick="openPage(\''+p.id+'\')" style="flex:1;cursor:pointer"><b>'+esc(p.d.t||bt('بدون عنوان','Untitled'))+'</b><div class="mu">'+esc(p.d.s||'')+'</div></div><button class="x" onclick="delPage(\''+p.id+'\')">✕</button></div>'}).join('')+'</div>'}
+ h+=hostBox()+'</div>';$('#app').innerHTML=h}
+function hostBox(){return '<div class="cd"><div class="tag">'+bt('عنوان استضافة البرنامج','Where this app is hosted')+'</div><input dir="ltr" id="host" placeholder="https://name.github.io/pages/" value="'+esc(ls('host')||(/^https?:/i.test(location.href)?location.href.split('#')[0]:''))+'" oninput="ls(\'host\',this.value)"><div class="mu">'+bt('لازم تكون الصفحة مرفوعة على موقع (مثل GitHub Pages) علشان الرابط يفتح على جوالات الآخرين.','The app must be hosted online (e.g. GitHub Pages) so links open on other phones.')+'</div></div>'}
+function editor(){var h='<div class="w"><div class="r"><button class="s n" onclick="goHome()">← '+bt('رجوع','Back')+'</button><div class="tag" style="flex:1;text-align:center">'+bt('تصميم الصفحة','Page design')+'</div></div>'
+ +'<div class="cd"><input placeholder="'+bt('عنوان الصفحة','Page title')+'" value="'+esc(D.t)+'" oninput="D.t=this.value;upd()"><input placeholder="'+bt('وصف قصير (اختياري)','Subtitle (optional)')+'" value="'+esc(D.s)+'" oninput="D.s=this.value;upd()"><div class="r" style="margin-top:6px">'+COL.map(function(c){return '<button class="n" style="background:'+c+';width:34px;height:34px;padding:0;border-radius:17px;'+(D.c==c?'outline:3px solid #999;outline-offset:2px':'')+'" onclick="D.c=\''+c+'\';render()"></button>'}).join('')+'</div></div>'
+ +'<div id="bl"></div><div class="cd"><div class="tag">'+bt('أضف عنصرًا','Add element')+'</div><div class="tb">'+Object.keys(TYPES).map(function(k){return '<button class="s" onclick="addB(\''+k+'\')">+ '+bt(TYPES[k][0],TYPES[k][1])+'</button>'}).join('')+'</div></div>'
+ +'<div class="tag">'+bt('معاينة','Preview')+'</div><div class="pv" id="pv"></div>'
+ +'<div class="cd qr"><div class="tag">'+bt('الباركود والرابط','Barcode & link')+'</div><canvas id="qc" width="10" height="10"></canvas><div id="qm" class="mu"></div><div class="lk" id="lk"></div>'
+ +'<div class="r" style="margin-top:10px"><button onclick="dlQr()">'+bt('حفظ الباركود','Save QR')+'</button><button class="g" onclick="shWa()">'+bt('واتساب','WhatsApp')+'</button></div><div class="r" style="margin-top:8px"><button class="s" onclick="cpLink()">'+bt('نسخ الرابط','Copy link')+'</button><button class="s" onclick="dlHtml()">'+bt('تنزيل الصفحة HTML','Download HTML')+'</button><button class="s" onclick="window.open(LINK||\'#\')">'+bt('فتح الصفحة','Open page')+'</button></div></div>'+hostBox()+'</div>';
+ $('#app').innerHTML=h;blocks();upd()}
+function blocks(){var h='';D.b.forEach(function(x,i){var t=x[0],lb=LAB[t];h+='<div class="blk"><div class="r"><span class="tag">'+bt(TYPES[t][0],TYPES[t][1])+'</span><span class="n r"><button class="s n" onclick="mv('+i+',-1)">↑</button><button class="s n" onclick="mv('+i+',1)">↓</button><button class="x n" onclick="rm('+i+')">✕</button></span></div>';
+  if(t=='f')h+='<input placeholder="'+bt('العنوان (مثل: الاسم)','Label (e.g. Name)')+'" value="'+esc(x[1])+'" oninput="D.b['+i+'][1]=this.value;upd()"><input placeholder="'+bt('القيمة','Value')+'" value="'+esc(x[2])+'" oninput="D.b['+i+'][2]=this.value;upd()">';
+  else if(t=='h'||t=='p')h+='<textarea oninput="D.b['+i+'][1]=this.value;upd()">'+esc(x[1])+'</textarea>';
+  else h+='<input placeholder="'+bt(lb[0],'Button text')+'" value="'+esc(x[1])+'" oninput="D.b['+i+'][1]=this.value;upd()"><input dir="ltr" placeholder="'+lb[1]+'" value="'+esc(x[2])+'" oninput="D.b['+i+'][2]=this.value;upd()">';
+  h+='</div>'});$('#bl').innerHTML=h}
+function addB(k){D.b.push([k,'','']);blocks();upd()}
+function rm(i){D.b.splice(i,1);blocks();upd()}
+function mv(i,d){var j=i+d;if(j<0||j>=D.b.length)return;var t=D.b[i];D.b[i]=D.b[j];D.b[j]=t;blocks();upd()}
+var T=0;
+function upd(){var p=$('#pv');if(p)p.innerHTML=pageInner(D);clearTimeout(T);T=setTimeout(mkLink,250)}
+function clean(){return {t:D.t,s:D.s,c:D.c,b:D.b.filter(function(x){return x[1]||x[2]})}}
+function mkLink(){var b=base();enc(clean()).then(function(e){if(!$('#lk'))return;LINK=(b||'https://YOUR-SITE/')+'#p='+e;$('#lk').textContent=LINK;
+ var q=QR.make(LINK,'L'),c=$('#qc');
+ if(!q){c.width=c.height=10;$('#qm').textContent=bt('الصفحة طويلة جدًا للباركود — قلّل المحتوى. (الرابط وملف HTML يعملان.)','Too long for a QR — shorten the content. (Link and HTML file still work.)');return}
+ var z=q.size,s=Math.max(3,Math.floor(560/(z+8))),n=(z+8)*s,x=c.getContext('2d');c.width=c.height=n;x.fillStyle='#fff';x.fillRect(0,0,n,n);x.fillStyle='#000';var i,j;for(j=0;j<z;j++)for(i=0;i<z;i++)if(q.get(i,j))x.fillRect((i+4)*s,(j+4)*s,s,s);
+ $('#qm').textContent=b?bt('امسح الباركود لفتح الصفحة','Scan to open the page'):bt('اكتب عنوان استضافة البرنامج بالأسفل ليعمل الباركود على الجوالات الأخرى','Enter the hosting address below so the QR works on other phones')}).catch(function(){})}
+function blobSave(bl,n){var a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download=n;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},4000)}
+function nm(){return (D.t||'page').replace(/[\\/:*?"<>|]/g,'_')}
+function dlQr(){$('#qc').toBlob(function(b){blobSave(b,nm()+'-qr.png')})}
+function dlHtml(){blobSave(new Blob([fullHtml(clean())],{type:'text/html'}),nm()+'.html')}
+function cpLink(){try{navigator.clipboard.writeText(LINK).then(function(){toast(bt('تم النسخ','Copied'))},function(){toast(bt('تعذّر النسخ','Copy failed'))})}catch(e){toast(bt('تعذّر النسخ','Copy failed'))}}
+function shWa(){$('#qc').toBlob(function(b){var f;try{f=new File([b],nm()+'-qr.png',{type:'image/png'})}catch(e){}
+ if(f&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],text:(D.t||'')+'\n'+LINK}).catch(function(){})}else window.open('https://wa.me/?text='+encodeURIComponent((D.t||'')+'\n'+LINK))})}
+window.addEventListener('hashchange',function(){if(/^#p=/.test(location.hash)){view='';render()}});
+if(/^#p=/.test(location.hash))view='';
+render();
+if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(function(){});
+</script></body></html>

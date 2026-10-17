@@ -1,0 +1,5 @@
+مولّد الصفحات والباركود — Dev. Ahmed Ismail
+1) ارفع الملفات الخمسة (index.html, manifest.webmanifest, sw.js, icon-192.png, icon-512.png) على مستودع GitHub جديد Public اسمه مثلا pages.
+2) Settings > Pages > Branch: main / root > Save.
+3) افتح الرابط https://اسمك.github.io/pages/ من Chrome ثم ⋮ > تثبيت التطبيق.
+4) اعمل صفحة، وسيظهر الباركود والرابط تلقائيا. الصفحة نفسها محفوظة داخل الرابط.
